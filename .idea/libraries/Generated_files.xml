@@ -1,0 +1,39 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/Stage.js" />
+        <item url="file://$PROJECT_DIR$/Paddle.js" />
+        <item url="file://$PROJECT_DIR$/CircleItem.js" />
+        <item url="file://$PROJECT_DIR$/src/Item.js" />
+        <item url="file://$PROJECT_DIR$/RectItem.js" />
+        <item url="file://$PROJECT_DIR$/src/CircleItem.js" />
+        <item url="file://$PROJECT_DIR$/main.js" />
+        <item url="file://$PROJECT_DIR$/Item.js" />
+        <item url="file://$PROJECT_DIR$/src/RectItem.js" />
+        <item url="file://$PROJECT_DIR$/src/Stage.js" />
+        <item url="file://$PROJECT_DIR$/src/main.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/Paddle.js" />
+      <root url="file://$PROJECT_DIR$/Stage.js" />
+      <root url="file://$PROJECT_DIR$/CircleItem.js" />
+      <root url="file://$PROJECT_DIR$/RectItem.js" />
+      <root url="file://$PROJECT_DIR$/main.js" />
+      <root url="file://$PROJECT_DIR$/Item.js" />
+      <root url="file://$PROJECT_DIR$/Paddle.js" />
+      <root url="file://$PROJECT_DIR$/Stage.js" />
+      <root url="file://$PROJECT_DIR$/CircleItem.js" />
+      <root url="file://$PROJECT_DIR$/src/Item.js" />
+      <root url="file://$PROJECT_DIR$/RectItem.js" />
+      <root url="file://$PROJECT_DIR$/src/CircleItem.js" />
+      <root url="file://$PROJECT_DIR$/main.js" />
+      <root url="file://$PROJECT_DIR$/src/RectItem.js" />
+      <root url="file://$PROJECT_DIR$/Item.js" />
+      <root url="file://$PROJECT_DIR$/src/Stage.js" />
+      <root url="file://$PROJECT_DIR$/src/main.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
