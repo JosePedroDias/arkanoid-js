@@ -18,9 +18,10 @@ Using WebStorm for development.
 
 ## TODO
 
-* update loop
 * mouse read -> move paddle
 * box2d basics
 * make it move the ball
 * make paddle mouse-driven
 * make blocks destroyable
+* sfx
+* display score and lives?

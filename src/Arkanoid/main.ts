@@ -22,9 +22,9 @@ module Arkanoid {
         parent: document.body
     });
 
-    var it1 = new Engine.RectItem([30, 20], [50, 50], '#F00');
-    var it2 = new Engine.RectItem([50, 20], [50, 10], '#0F0');
-    var it3 = new Engine.CircleItem(20, [50, 90], '#00F');
+    var it1 = new Engine.RectItem({  pos:[30, 20], dims:[50, 50], color:'#F00'});
+    var it2 = new Engine.RectItem({  pos:[60, 20], dims:[50, 25], color:'#0F0'});
+    var it3 = new Engine.CircleItem({pos:[90, 20], r:10,          color:'#00F'});
     stage.addItem(it1);
     stage.addItem(it2);
     stage.addItem(it3);

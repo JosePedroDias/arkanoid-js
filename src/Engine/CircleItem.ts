@@ -5,18 +5,24 @@ module Engine {
 
     var PI2 = Math.PI * 2;
 
+    export interface CircleItemCtorOpts {
+        r?     : number;
+        pos?   : number[];
+        color? : string;
+    }
+
     export class CircleItem implements Item {
         _r     : number;
         _pos   : number[]; // center
         _color : string;
 
-        constructor(r, pos, color) {
-            this._r     = r     || 10;
-            this._pos   = pos   || [5, 5];
-            this._color = color || '#F00';
+        constructor(o : CircleItemCtorOpts) {
+            this._r     = o.r     || 1;
+            this._pos   = o.pos   || [0, 0];
+            this._color = o.color || '#FFF';
         }
 
-        render(ctx:CanvasRenderingContext2D) {
+        render(ctx : CanvasRenderingContext2D) {
             ctx.fillStyle = this._color;
             ctx.beginPath();
             ctx.arc(this._pos[0], this._pos[1], this._r, 0, PI2);

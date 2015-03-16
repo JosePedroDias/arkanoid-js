@@ -85,8 +85,6 @@ module Engine {
 
         run() {
             this._t0 = getNow();
-            //this._t = 0;
-            //this._dt = 1 / 60;
             this._isRunning = true;
             this.render();
         }
