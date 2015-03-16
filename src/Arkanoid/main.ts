@@ -4,7 +4,7 @@
 ///<reference path="../Physics/World.ts" />
 ///<reference path="../Physics/Shape.ts" />
 
-// tsc -t ES5 --sourcemap main.ts --out ~/Work/arkanoid/build/arkanoid.js
+// tsc -t ES5 --removeComments --sourcemap main.ts --out ~/Work/arkanoid/build/main.js
 
 module Arkanoid {
 
