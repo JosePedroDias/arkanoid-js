@@ -8,7 +8,12 @@ interface Window {
 
 module Engine {
 
-    var raf : Function = (window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame);
+    var raf : Function = (
+        window.requestAnimationFrame       ||
+        window.mozRequestAnimationFrame    ||
+        window.webkitRequestAnimationFrame ||
+        window.msRequestAnimationFrame
+    );
 
     interface StageCtorOpts {
         dims?   : number[];

@@ -8,8 +8,8 @@ module Arkanoid {
 
     // so TS doesn't nag about these properties below
     interface Document {
-        innerWidth  : Number;
-        innerHeight : Number;
+        innerWidth  : number;
+        innerHeight : number;
     }
 
     var stage = new Engine.Stage({
