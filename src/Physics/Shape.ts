@@ -10,24 +10,24 @@ module Physics {
     import BCircleShape = Box2D.Collision.Shapes.b2CircleShape;
     import BPolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
 
-    interface ShapeCtorOpts {
+    export interface ShapeCtorOpts {
         dims? : number[];
-        radius? : number;
+        r?    : number;
 
-        density? : number;
-        friction? : number;
+        density?     : number;
+        friction?    : number;
         restitution? : number;
 
         isStatic? : boolean;
 
-        position? : number[];
+        pos ? : number[];
 
         data? : any;
     }
 
     export class Shape {
 
-        constructor(w : BWorld , o : ShapeCtorOpts) {
+        constructor(w : World , o : ShapeCtorOpts) {
             var fixDef = new BFixtureDef();
             fixDef.density     = o.density     || 1.0;
             fixDef.friction    = o.friction    || 0.5;
@@ -36,13 +36,13 @@ module Physics {
             var bodyDef = new BBodyDef();
             bodyDef.type = o.isStatic ? BBody.b2_staticBody : BBody.b2_dynamicBody;
 
-            if ('position' in o) {
-                bodyDef.position.x = o.position[0];
-                bodyDef.position.y = o.position[1];
+            if ('pos' in o) {
+                bodyDef.position.x = o.pos[0];
+                bodyDef.position.y = o.pos[1];
             }
 
-            if ('radius' in o) {
-                fixDef.shape = new BCircleShape(o.radius); // r
+            if ('r' in o) {
+                fixDef.shape = new BCircleShape(o.r); // r
             }
             else if ('dims' in o) {
                 fixDef.shape = new BPolygonShape();
@@ -53,7 +53,8 @@ module Physics {
                 throw 'either radius or dims must be provided!';
             }
 
-            var body = w.CreateBody(bodyDef);
+            var ww = w._w;
+            var body = ww.CreateBody(bodyDef);
             body.CreateFixture(fixDef);
 
             if ('data' in o) {
