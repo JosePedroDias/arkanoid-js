@@ -3,6 +3,7 @@
 ///<reference path="../Engine/CircleItem.ts" />
 ///<reference path="../Physics/World.ts" />
 ///<reference path="../Physics/Shape.ts" />
+///<reference path="../Input/Mouse.ts" />
 
 // tsc -t ES5 --removeComments --sourcemap main.ts --out ~/Work/arkanoid/build/main.js
 
@@ -16,10 +17,11 @@ module Arkanoid {
 
     var W = 400;
     var H = 300;
+    var el = document.body;
 
     var stage = new Engine.Stage({
         dims:   [W, H],
-        parent: document.body
+        parent: el
     });
 
     var it1 = new Engine.RectItem({  pos:[30, 20], dims:[50, 50], color:'#F00'});
@@ -35,10 +37,14 @@ module Arkanoid {
         pos:  [W/2, H/2]
     });
 
+    var mouse = new Input.Mouse( el.querySelector('canvas') );
+    mouse.setup();
+
     stage.setOnUpdate(function() {
         var dt = this._dt;
         it1._pos[0] += 100 * dt;
         it2._pos[1] += 50 * dt;
+        it3._pos[0] = mouse._pos[0];
         //console.log('t:%s | dt:%s', this._t.toFixed(3), this._dt.toFixed(3));
     });
 
