@@ -1,5 +1,6 @@
-/// <reference path="../../ext/box2dweb.d.ts" />
-/// <reference path="World.ts" />
+///<reference path="../../ext/box2dweb.d.ts" />
+///<reference path="World.ts" />
+///<reference path="../Engine/Item.ts" />
 
 module Physics {
 
@@ -23,11 +24,17 @@ module Physics {
         pos ? : number[];
 
         data? : any;
+
+        visual? : Engine.Item;
     }
 
     export class Shape {
+        _visual : Engine.Item;
+        _body   : BBody;
 
         constructor(w : World , o : ShapeCtorOpts) {
+            this._visual = o.visual;
+
             var fixDef = new BFixtureDef();
             fixDef.density     = o.density     || 1.0;
             fixDef.friction    = o.friction    || 0.5;
@@ -54,11 +61,11 @@ module Physics {
             }
 
             var ww = w._w;
-            var body = ww.CreateBody(bodyDef);
-            body.CreateFixture(fixDef);
+            this._body = ww.CreateBody(bodyDef);
+            this._body.CreateFixture(fixDef);
 
             if ('data' in o) {
-                body.SetUserData(o.data);
+                this._body.SetUserData(o.data);
             }
         }
 
