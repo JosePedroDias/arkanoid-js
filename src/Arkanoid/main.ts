@@ -33,6 +33,9 @@ module Arkanoid {
         parent: el
     });
 
+    var paddleSh : Physics.Shape;
+    var ballSh   : Physics.Shape;
+
     var paddleIt = new Engine.RectItem({  pos:[W/2, H*0.9], dims:[64, 16], color:'#D22'});
     var ballIt   = new Engine.CircleItem({pos:[W/2, H/2],   r:8,           color:'#DDD'});
     stage.addItem(paddleIt);
@@ -47,7 +50,15 @@ module Arkanoid {
         function(a : string, b : string) { // contact listener
             if (a === 'BOTTOM' || b === 'BOTTOM') {
                 stage.stop();
-                updateScore('GAME OVER');
+                return updateScore('GAME OVER');
+            }
+
+            if (a === 'PADDLE' || b === 'PADDLE') {
+                var dx = ballIt._pos[0] - paddleIt._pos[0];
+                //setTimeout(function() {
+                    var v : number = ballSh._body.GetLinearVelocity().Length();
+                    ballSh.applyImpulse([v*dx*500*stage._dt, 0]);
+                //});
             }
 
             var brickData : string;
@@ -87,7 +98,7 @@ module Arkanoid {
     );
 
     // DYNAMIC SHAPES
-    var paddleSh = new Physics.Shape(world, {
+    paddleSh = new Physics.Shape(world, {
         pos:      paddleIt._pos,
         dims:     paddleIt._dims,
         visual:   paddleIt,
@@ -95,7 +106,7 @@ module Arkanoid {
         data:     'PADDLE'
     });
     shapesToTrack.push(paddleSh);
-    var ballSh = new Physics.Shape(world, {
+    ballSh = new Physics.Shape(world, {
         pos:      ballIt._pos,
         r:        ballIt._r,
         visual:   ballIt,
@@ -194,9 +205,9 @@ module Arkanoid {
         else if (x > W - w) { x = W - w; }
         paddleSh._body.SetPosition( new BVec2(x, paddleSh._body.GetPosition().y) );
 
-        var lv : BVec2 = ballSh._body.GetLinearVelocity();
-        lv.Multiply(5);
-        ballSh._body.SetLinearVelocity(lv);
+        var v : BVec2 = ballSh._body.GetLinearVelocity();
+        v.Multiply(150000 * stage._dt);
+        ballSh._body.SetLinearVelocity(v);
     });
 
     //stage.render();

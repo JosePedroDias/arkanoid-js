@@ -33,9 +33,9 @@ Using WebStorm for development.
 
 ## TODO
 
-* make blocks destroyable (fix kill!)
 * sfx
-* display score
+* speedup ball?
+* bricks with multiple hits? + opacity?
 
 
 

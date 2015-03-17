@@ -8,6 +8,7 @@ module Input {
         constructor(el : Element) {
             this._el = el;
             window.addEventListener('mousemove', this._onMouse.bind(this));
+            window.addEventListener('touchmove', this._onTouch.bind(this));
         }
 
         setup() {
@@ -20,6 +21,10 @@ module Input {
             this._pos[0] = ev.clientX - this._off[0];
             this._pos[1] = ev.clientY - this._off[1];
             //console.log(this._pos.join(' | '));
+        }
+
+        _onTouch(ev) {
+            this._onMouse( ev.changedTouches[0] );
         }
 
     }
