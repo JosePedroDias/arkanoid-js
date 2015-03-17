@@ -36,3 +36,9 @@ Using WebStorm for development.
 * make blocks destroyable (fix kill!)
 * sfx
 * display score
+
+
+
+## JSBIN version
+
+<http://jsbin.com/kuhure/latest/quiet> (can be outdated!)
