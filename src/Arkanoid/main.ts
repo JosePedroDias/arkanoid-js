@@ -27,36 +27,39 @@ module Arkanoid {
         parent: el
     });
 
-    var it1 = new Engine.RectItem({  pos:[ 30, 20], dims:[50, 50], color:'#F00'});
-    var it2 = new Engine.RectItem({  pos:[120, 20], dims:[50, 25], color:'#0F0'});
-    var it3 = new Engine.CircleItem({pos:[220, 20], r:10,          color:'#00F'});
-    stage.addItem(it1);
-    stage.addItem(it2);
-    stage.addItem(it3);
-
-    var shapesToTrack : Physics.Shape[] = [];
+    var paddleIt = new Engine.RectItem({  pos:[ 30, 20], dims:[50, 50], color:'#F00'});
+    var ballIt   = new Engine.CircleItem({pos:[220, 20], r:10,          color:'#00F'});
+    var brickIt  = new Engine.RectItem({  pos:[120, 20], dims:[50, 25], color:'#0F0'});
+    stage.addItem(paddleIt);
+    stage.addItem(ballIt);
+    stage.addItem(brickIt);
 
     var world = new Physics.World(function() {});
 
+    var shapesToTrack : Physics.Shape[] = [];
+
     // DYNAMIC SHAPES
-    var sh1 = new Physics.Shape(world, {
-        pos:    it1._pos,
-        dims:   it1._dims,
-        visual: it1
+    var paddleSh = new Physics.Shape(world, {
+        pos:    paddleIt._pos,
+        dims:   paddleIt._dims,
+        visual: paddleIt,
+        data:   'PADDLE'
     });
-    var sh2 = new Physics.Shape(world, {
-        pos:    it2._pos,
-        dims:   it2._dims,
-        visual: it2
+    var ballSh = new Physics.Shape(world, {
+        pos:    ballIt._pos,
+        r:      ballIt._r,
+        visual: ballIt,
+        data:   'BALL'
     });
-    var sh3 = new Physics.Shape(world, {
-        pos:    it3._pos,
-        r:      it3._r,
-        visual: it3
+    var brickSh = new Physics.Shape(world, {
+        pos:    brickIt._pos,
+        dims:   brickIt._dims,
+        visual: brickIt,
+        data:   'BRICK'
     });
-    shapesToTrack.push(sh1);
-    shapesToTrack.push(sh2);
-    shapesToTrack.push(sh3);
+    shapesToTrack.push(paddleSh);
+    shapesToTrack.push(ballSh);
+    shapesToTrack.push(brickSh);
 
     // STATIC WALLS
     var l = 10;
