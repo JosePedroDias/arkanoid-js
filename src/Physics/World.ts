@@ -12,8 +12,11 @@ module Physics {
         _cb : Function;
         _cl : BContactListener;
 
-        constructor(cb : Function) {
-            this._w = new BWorld( new BVec2(0, 9.8), true ); // gravity, doSleep
+        constructor(gravity : number[], cb? : Function) {
+            this._w = new BWorld( new BVec2(gravity[0], gravity[1]), true ); // gravity, doSleep
+
+            if (!cb) { return; }
+
             this._cb = cb;
             this._cl = new BContactListener();
             this._cl.BeginContact = function(contact : BContact) {
@@ -21,7 +24,7 @@ module Physics {
                 var b = contact.GetFixtureB().GetBody();
                 var udA = a.GetUserData();
                 var udB = b.GetUserData();
-                //console.log(udA, udB);
+                cb(udA, udB);
             };
             this._w.SetContactListener( this._cl );
         }

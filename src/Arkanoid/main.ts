@@ -27,34 +27,47 @@ module Arkanoid {
         parent: el
     });
 
-    var paddleIt = new Engine.RectItem({  pos:[ 30, 20], dims:[50, 50], color:'#F00'});
-    var ballIt   = new Engine.CircleItem({pos:[220, 20], r:10,          color:'#00F'});
-    var brickIt  = new Engine.RectItem({  pos:[120, 20], dims:[50, 25], color:'#0F0'});
+    var paddleIt = new Engine.RectItem({  pos:[W/2, H*0.9], dims:[64, 16], color:'#F00'});
+    var ballIt   = new Engine.CircleItem({pos:[W/2, H/2],   r:8,           color:'#00F'});
+    var brickIt  = new Engine.RectItem({  pos:[W/2, H*0.2], dims:[32, 16], color:'#0F0'});
     stage.addItem(paddleIt);
     stage.addItem(ballIt);
     stage.addItem(brickIt);
 
-    var world = new Physics.World(function() {});
+    var world = new Physics.World(
+        [0, 0], // gravity
+        function(a, b) { // contact listener
+            if (a === 'BOTTOM' || b === 'BOTTOM') {
+                stage.stop();
+                window.alert('GAME OVER');
+            }
+            //console.log( [a, b].join(' | ') );
+        }
+    );
 
     var shapesToTrack : Physics.Shape[] = [];
 
     // DYNAMIC SHAPES
     var paddleSh = new Physics.Shape(world, {
-        pos:    paddleIt._pos,
-        dims:   paddleIt._dims,
-        visual: paddleIt,
-        data:   'PADDLE'
+        pos:      paddleIt._pos,
+        dims:     paddleIt._dims,
+        visual:   paddleIt,
+        isStatic: true,
+        data:     'PADDLE'
     });
     var ballSh = new Physics.Shape(world, {
-        pos:    ballIt._pos,
-        r:      ballIt._r,
-        visual: ballIt,
-        data:   'BALL'
+        pos:      ballIt._pos,
+        r:        ballIt._r,
+        visual:   ballIt,
+        data:     'BALL'
     });
+
+    ballSh.applyImpulse([ (Math.random() - 0.5) * 100, 10000]);
     var brickSh = new Physics.Shape(world, {
         pos:    brickIt._pos,
         dims:   brickIt._dims,
         visual: brickIt,
+        isStatic: true,
         data:   'BRICK'
     });
     shapesToTrack.push(paddleSh);
@@ -115,11 +128,15 @@ module Arkanoid {
             }
         });
 
-        //it1._pos[0] += 100 * dt;
-        //it1._rot += 1 * dt;
-        //it2._pos[1] += 50 * dt;
-        //it3._pos[0] = mouse._pos[0];
-        //console.log('t:%s | dt:%s', this._t.toFixed(3), this._dt.toFixed(3));
+        var x = mouse._pos[0];
+        var w = paddleIt._dims[0]/2;
+        if      (x < w    ) { x =     w; }
+        else if (x > W - w) { x = W - w; }
+        paddleSh._body.SetPosition( new BVec2(x, paddleSh._body.GetPosition().y) );
+
+        var lv : BVec2 = ballSh._body.GetLinearVelocity();
+        lv.Multiply(5);
+        ballSh._body.SetLinearVelocity(lv);
     });
 
     //stage.render();

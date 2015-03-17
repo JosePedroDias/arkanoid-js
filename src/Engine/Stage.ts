@@ -90,7 +90,7 @@ module Engine {
         }
 
         stop() {
-            this._isRunning = true;
+            this._isRunning = false;
         }
     }
 

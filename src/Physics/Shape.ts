@@ -10,6 +10,7 @@ module Physics {
     import BWorld = Box2D.Dynamics.b2World;
     import BCircleShape = Box2D.Collision.Shapes.b2CircleShape;
     import BPolygonShape = Box2D.Collision.Shapes.b2PolygonShape;
+    import BVec2 = Box2D.Common.Math.b2Vec2;
 
     export interface ShapeCtorOpts {
         dims? : number[];
@@ -36,9 +37,9 @@ module Physics {
             this._visual = o.visual;
 
             var fixDef = new BFixtureDef();
-            fixDef.density     = o.density     || 1.0;
-            fixDef.friction    = o.friction    || 0.5;
-            fixDef.restitution = o.restitution || 0.2;
+            fixDef.density     = o.density     || 1; // influences weight of the shape
+            fixDef.friction    = o.friction    || 0; // what gets lost on movement
+            fixDef.restitution = o.restitution || 0.5; // what gets lost on collision
 
             var bodyDef = new BBodyDef();
             bodyDef.type = o.isStatic ? BBody.b2_staticBody : BBody.b2_dynamicBody;
@@ -67,6 +68,15 @@ module Physics {
             if ('data' in o) {
                 this._body.SetUserData(o.data);
             }
+        }
+
+        applyImpulse(dir : number[], strength? : number) {
+            var imp = new BVec2(dir[0], dir[1]);
+            if (strength) {
+                imp.Normalize();
+                imp.Multiply(strength);
+            }
+            this._body.ApplyImpulse(imp, this._body.GetPosition()); // forceDir in  N-seconds or kg-m/s, center of application
         }
 
     }
