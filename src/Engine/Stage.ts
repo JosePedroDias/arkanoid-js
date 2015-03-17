@@ -60,6 +60,13 @@ module Engine {
             this._items.push(item);
         }
 
+        removeItem(item : Item) {
+            var idx = this._items.indexOf(item);
+            if (idx !== -1) {
+                this._items.splice(idx, 1);
+            }
+        }
+
         setOnUpdate(cb : Function) {
             this._onUpdate = cb;
         }

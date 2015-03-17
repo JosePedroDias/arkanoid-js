@@ -79,6 +79,10 @@ module Physics {
             this._body.ApplyImpulse(imp, this._body.GetPosition()); // forceDir in  N-seconds or kg-m/s, center of application
         }
 
+        destroy() {
+            this._body.GetWorld().DestroyBody( this._body );
+        }
+
     }
 
 }

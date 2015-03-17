@@ -33,6 +33,6 @@ Using WebStorm for development.
 
 ## TODO
 
-* make blocks destroyable
+* make blocks destroyable (fix kill!)
 * sfx
-* display score and lives?
+* display score

@@ -20,32 +20,71 @@ module Arkanoid {
 
     var W = 400;
     var H = 300;
+    var SCORE = 0;
     var el = document.body;
+    var scoreEl = document.querySelector('.score');
+
+    var updateScore = function(txt : string) {
+        scoreEl.firstChild.nodeValue = txt;
+    };
 
     var stage = new Engine.Stage({
         dims:   [W, H],
         parent: el
     });
 
-    var paddleIt = new Engine.RectItem({  pos:[W/2, H*0.9], dims:[64, 16], color:'#F00'});
-    var ballIt   = new Engine.CircleItem({pos:[W/2, H/2],   r:8,           color:'#00F'});
-    var brickIt  = new Engine.RectItem({  pos:[W/2, H*0.2], dims:[32, 16], color:'#0F0'});
+    var paddleIt = new Engine.RectItem({  pos:[W/2, H*0.9], dims:[64, 16], color:'#D22'});
+    var ballIt   = new Engine.CircleItem({pos:[W/2, H/2],   r:8,           color:'#DDD'});
     stage.addItem(paddleIt);
     stage.addItem(ballIt);
-    stage.addItem(brickIt);
+
+    var brickShapes = {};
+
+    var shapesToTrack : Physics.Shape[] = [];
 
     var world = new Physics.World(
         [0, 0], // gravity
-        function(a, b) { // contact listener
+        function(a : string, b : string) { // contact listener
             if (a === 'BOTTOM' || b === 'BOTTOM') {
                 stage.stop();
-                window.alert('GAME OVER');
+                updateScore('GAME OVER');
             }
-            //console.log( [a, b].join(' | ') );
+
+            var brickData : string;
+            if (a.indexOf('BRICK ') === 0) {
+                brickData = a;
+            }
+            else if (b.indexOf('BRICK ') === 0) {
+                brickData = b;
+            }
+            else {
+                return;
+            }
+
+            var id = brickData.split(' ')[1];
+
+            setTimeout(function() { // bodies can only be destroyed after collision phase
+                var id = this.id;
+
+                var brickSh:Physics.Shape = brickShapes[id];
+                var brickIt:Engine.RectItem = <Engine.RectItem>brickSh._visual;
+
+                stage.removeItem(brickIt);
+
+                delete brickShapes[id];
+
+                var idx = shapesToTrack.indexOf(brickSh);
+                if (idx !== -1) {
+                    shapesToTrack.splice(idx, 1);
+                }
+
+                brickSh.destroy();
+
+                ++SCORE;
+                updateScore('' + SCORE);
+            }.bind({id:id}), 0);
         }
     );
-
-    var shapesToTrack : Physics.Shape[] = [];
 
     // DYNAMIC SHAPES
     var paddleSh = new Physics.Shape(world, {
@@ -55,24 +94,15 @@ module Arkanoid {
         isStatic: true,
         data:     'PADDLE'
     });
+    shapesToTrack.push(paddleSh);
     var ballSh = new Physics.Shape(world, {
         pos:      ballIt._pos,
         r:        ballIt._r,
         visual:   ballIt,
         data:     'BALL'
     });
-
     ballSh.applyImpulse([ (Math.random() - 0.5) * 100, 10000]);
-    var brickSh = new Physics.Shape(world, {
-        pos:    brickIt._pos,
-        dims:   brickIt._dims,
-        visual: brickIt,
-        isStatic: true,
-        data:   'BRICK'
-    });
-    shapesToTrack.push(paddleSh);
     shapesToTrack.push(ballSh);
-    shapesToTrack.push(brickSh);
 
     // STATIC WALLS
     var l = 10;
@@ -101,6 +131,36 @@ module Arkanoid {
         data:     'RIGHT'
     });
 
+    // BRICKS
+    var brickIt : Engine.RectItem;
+    var brickSh : Physics.Shape;
+    var pos  : number[];
+    var dims : number[] = [32, 16];
+    var i = 0;
+    for (var y = 0; y < 4; ++y) {
+        for (var x = 0; x < 9; ++x) {
+            pos = [
+                (y % 2 ? 32 : 52) + x * (dims[0] + 8),
+                         16       + y * (dims[1] + 8)
+            ];
+            brickIt = new Engine.RectItem({
+                pos:   pos,
+                dims:  dims,
+                color: ['rgb(', ~~(Math.random() * 256), ',', ~~(Math.random() * 256), ',', ~~(Math.random() * 256), ')'].join('')
+            });
+            brickSh = new Physics.Shape(world, {
+                pos:      pos,
+                dims:     dims,
+                visual:   brickIt,
+                isStatic: true,
+                data:     'BRICK ' + i
+            });
+            stage.addItem(brickIt);
+            shapesToTrack.push(brickSh);
+            brickShapes[i] = brickSh;
+            ++i;
+        }
+    }
 
 
     var mouse = new Input.Mouse( el.querySelector('canvas') );
